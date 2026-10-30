@@ -1,0 +1,17 @@
+
+
+   ==================================================================
+      PeerTube Facile
+   ==================================================================
+
+      Pour INSTALLER PeerTube sur ce PC, tape :   install
+      puis appuie sur Entree.
+
+      ATTENTION : tout le disque de ce PC sera efface.
+
+      Sinon, ne touche a rien : le PC demarrera sur son disque
+      dans 30 secondes (utile si l'installation est deja faite :
+      retire alors la cle USB).
+
+   ==================================================================
+

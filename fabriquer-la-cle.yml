@@ -1,0 +1,41 @@
+# Fabrique automatiquement l'image de la clé USB PeerTube Facile et la publie
+# dans « Releases ». Se lance à chaque modification du projet, chaque mois
+# (pour suivre les nouvelles versions de Debian), ou à la main (onglet Actions).
+name: Fabriquer la clé USB
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 4 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  iso:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Outils
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq xorriso cpio
+
+      - name: Fabrication de l'image
+        run: bash construire/construire-iso.sh sortie
+
+      - name: Publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ISO="$(ls sortie/peertube-facile-debian-*.iso)"
+          VERSION="$(basename "$ISO" .iso | sed 's/peertube-facile-debian-//')"
+          TAG="debian-$VERSION-$(git rev-parse --short HEAD)"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Version $TAG déjà publiée, rien à faire."
+            exit 0
+          fi
+          gh release create "$TAG" "$ISO" "$ISO.sha256" --latest \
+            --title "PeerTube Facile (Debian $VERSION)" \
+            --notes "Télécharge le fichier .iso, puis copie-le sur une clé USB avec balenaEtcher (ou Rufus en mode DD). Mode d'emploi : LISEZMOI.md."

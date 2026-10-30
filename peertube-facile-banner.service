@@ -1,0 +1,11 @@
+[Unit]
+Description=PeerTube Facile - message d'accueil sur l'écran
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /opt/peertube-facile/banner.sh
+
+[Install]
+WantedBy=multi-user.target
