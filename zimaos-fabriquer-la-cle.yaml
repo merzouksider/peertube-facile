@@ -1,0 +1,33 @@
+# PeerTube Facile - fabriquer l'image de la clé USB depuis ZimaOS
+#
+# 1. Avec l'explorateur de fichiers ZimaOS, copie le dossier « peertube-facile »
+#    dans /DATA/AppData/  (tu dois avoir /DATA/AppData/peertube-facile/construire/...)
+# 2. Importe ce fichier : + > Install a customized app > Import > Docker Compose
+# 3. Installe. Le conteneur travaille 2 à 10 minutes puis s'arrête tout seul.
+# 4. L'image apparaît dans /DATA/Downloads/peertube-facile/ (fichier .iso).
+#    Tu peux ensuite désinstaller cette app.
+
+name: peertube-facile-cle
+services:
+  fabrique:
+    image: debian:trixie
+    container_name: peertube-facile-fabrique
+    restart: "no"
+    command: ["bash", "/projet/construire/construire-iso.sh", "/sortie"]
+    volumes:
+      - /DATA/AppData/peertube-facile:/projet:ro
+      - /DATA/Downloads/peertube-facile:/sortie
+
+x-casaos:
+  architectures:
+    - amd64
+    - arm64
+  main: fabrique
+  author: self
+  category: self
+  title:
+    en_us: PeerTube Facile (USB builder)
+    fr_fr: PeerTube Facile (fabrique la clé USB)
+  description:
+    en_us: Builds the PeerTube Facile USB installer image, then stops.
+    fr_fr: Fabrique l'image de la clé USB PeerTube Facile, puis s'arrête.
