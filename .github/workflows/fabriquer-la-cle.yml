@@ -21,8 +21,8 @@ jobs:
 
       - name: Fabrication de l'image
         run: |
-          if [ -f peertube-facile.zip ]; then
-            unzip -q peertube-facile.zip -d "$RUNNER_TEMP/projet"
+          if [ -f peertube-facile-2.zip ]; then
+            unzip -q peertube-facile-2.zip -d "$RUNNER_TEMP/projet"
             PROJET="$RUNNER_TEMP/projet/peertube-facile"
           else
             PROJET="$PWD"
